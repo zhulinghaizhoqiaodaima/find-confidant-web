@@ -1,13 +1,13 @@
 <template>
-队伍
+    队伍
 </template>
-
+    
 <script>
 export default {
-  name: "Team"
+    name: "Team"
 }
 </script>
-
+    
 <style scoped>
 
 </style>

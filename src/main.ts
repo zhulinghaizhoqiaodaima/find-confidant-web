@@ -1,24 +1,14 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-
-import * as VueRouter from 'vue-router';
-import routes from "./routes/index";
-
+import router from './router'
 import Vant from 'vant'
 import 'vant/lib/index.css';
+import { ConfigProvider } from 'vant';
 const app = createApp(App);
 
-// 创建路由实例并传递 `routes` 配置
-const router = VueRouter.createRouter({
-    history: VueRouter.createWebHashHistory(),
-    routes, // `routes: routes` 的缩写
-})
-app.use(router);
-
-
+app.use(ConfigProvider);
 app.use(Vant)
-
-
+app.use(router)
 app.mount('#app')
 
 

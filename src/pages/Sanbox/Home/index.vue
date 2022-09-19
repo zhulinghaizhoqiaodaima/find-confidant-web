@@ -1,7 +1,7 @@
 
 <script setup lang="ts">
 import { reactive, toRefs } from 'vue'
-import Search from '../../components/search.vue';
+import Search from '../../../components/search.vue';
 
 </script>
 
