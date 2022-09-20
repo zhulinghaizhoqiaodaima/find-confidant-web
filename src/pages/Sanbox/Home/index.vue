@@ -1,7 +1,15 @@
 
 <script setup lang="ts">
-import { reactive, toRefs } from 'vue'
+import { onMounted, reactive, toRefs } from 'vue'
 import Search from '../../../components/search.vue';
+import { getUserInfo } from '../../../api/usersCurd';
+// const InitInfo = async ()=>{
+//      let res = await getUserInfo();
+//      console.log(res); 
+// }
+onMounted(()=>{
+   
+})
 
 </script>
 

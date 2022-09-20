@@ -1,41 +1,35 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import { Notify } from 'vant';
-import { isLoginApi } from '../../api/usersCurd';
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import {mainStore} from '../../store/index'
-import {storeToRefs} from 'pinia'
-const store = mainStore();
-// let {token} = storeToRefs(store);
-
+import { userCreate } from '../../api/usersCurd';
 const router = useRouter();
 let username = ref("")
 let password = ref("")
 const patternUsername = /.{4,}/
 const validatorPossword = (val: any) => /.{8,}/.test(val);
-
 const onSubmit = (values: any) => {
-    isLogin(values)
+    createUser(values)
+    validatorPossword(values.password)
 };
-const isLogin = async (user: any) => {
+const createUser = async (user: any) => {
     try {
-        const res: any = await isLoginApi(user)
-        console.log(res);
-        store.changeUserState(res.data.token,res.data.user)
+        const res: any = await userCreate(user)
         if (res.code === 1) {
-            Notify({ type: 'success', message: '登录成功' });
+            Notify({ type: 'success', message: '注册成功' });
             router.push({
-                path:'/home'
+                path:'/login'
             })
         } else {
-            Notify({ type: 'warning', message: res.description || '登录失败' });
+            Notify({ type: 'warning', message: res.description });
         }
     } catch (err: any) {
         Notify({ type: 'danger', message: err })
     }
 }
-</script>
 
+</script>
+    
 <template>
     <div class="wrap">
         <van-form @submit="onSubmit" class="form">
@@ -47,14 +41,13 @@ const isLogin = async (user: any) => {
             </van-cell-group>
             <div style="margin: 16px;">
                 <van-button round block type="primary" native-type="submit">
-                    登录
+                    注册
                 </van-button>
             </div>
         </van-form>
-
     </div>
 </template>
-
+    
 <style scoped lang="scss">
 .wrap {
     position: relative;
