@@ -4,7 +4,7 @@
     </div>
     <div class="personInfo">
       <van-image class="avtar"  lazy-load round width="69" height="69"
-        :src="centerInfo.avatarUrl" />
+        :src="UserInfo.avatarUrl" />
         <div class="editInfo" @click="goToInfoDetail">
             <span>编辑资料</span>
         </div>
@@ -14,23 +14,15 @@
 </template>
   
 <script setup lang="ts">
-import { storeToRefs } from "pinia";
-import { onMounted } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import { mainStore } from "../../../store";
-const store = mainStore()
+import { useRouter } from "vue-router";
+import {UserInfo} from '../../../common/storeUser'
 const router = useRouter();
-const { userInfo } =storeToRefs(store);
-const centerInfo:any = userInfo.value;
 
 const goToInfoDetail = ()=>{
   router.push({
     path: '/user/detail',
   })
 }
-
-
-
 
 </script>
   

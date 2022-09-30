@@ -1,41 +1,75 @@
+<script setup lang="ts">
+import { ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { updateUser } from "../../../../api/usersCurd";
+import { UserInfo } from "../../../../common/storeUser";
+const { avatarUrl } = UserInfo;
+
+let userName = ref(UserInfo.userName)
+let email = ref(UserInfo.email)
+let phone = ref(UserInfo.phone)
+const router = useRouter();
+const patternUsername = /.{4,}/
+const onSubmit = (values: any) => {
+  updateUserInfo(values)
+};
+const updateUserInfo = async (forms:any)=>{
+  try {
+    let data = {
+      id:UserInfo.id,
+      userName:forms.userName,
+      phone:forms.phone || '',
+      email:forms.email || '',
+    }
+    console.log(data);
+    
+    let res = await updateUser(data);
+    console.log(res);
+    
+  } catch (error) {
+    
+  }
+}
+</script>
+
 <template>
-    <van-cell title="昵称" is-link to="/user/edit" :value="user.username"  @click="toEdit('username', '昵称', user.username)"/>
-    <van-cell title="头像" is-link to="/user/edit">
-    <van-cell title="账号" :value="user.userAccount"/>
-      <img style="height: 48px" :src="user.avatarUrl"/>
-    </van-cell>
-    <van-cell title="性别" is-link :value="user.gender" @click="toEdit('gender', '性别', user.gender)"/>
-    <van-cell title="电话" is-link to="/user/edit" :value="user.phone" @click="toEdit('phone', '电话', user.phone)"/>
-    <van-cell title="邮箱" is-link to="/user/edit" :value="user.email" @click="toEdit('email', '邮箱', user.email)"/>
-    <van-cell title="注册时间" :value="user.createTime.toISOString()"/>
-  </template>
+  <div class="wrap">
+    <van-form class="submit" @submit="onSubmit">
+      <div class="avatar">
+        <van-image lazy-load round width="69" height="69" :src="avatarUrl" />
+      </div>
+      <div class="formInfo">
+        <van-cell-group inset>
+          <van-field v-model="userName" name="userName" label="昵称" placeholder="昵称"
+            :rules="[{ pattern:patternUsername , message: '账号长度限制4以上' }]" />
+          <van-field v-model="phone" name="phone" label="电话" placeholder="电话" />
+          <van-field v-model="email" name="email" label="邮箱" placeholder="邮箱" />
+        </van-cell-group>
+      </div>
+      <div style="margin: 16px;">
+        <van-button round block type="primary" native-type="submit">
+          修改
+        </van-button>
+      </div>
+    </van-form>
+  </div>
+</template>
   
-  <script setup lang="ts">
-  import {useRoute, useRouter} from "vue-router";
-  const router = useRouter();
-  const user = {
-    id: 1,
-    username: 'coqing',
-    userAccount: 'coqing',
-    avatarUrl: 'https://coqing.oss-cn-shenzhen.aliyuncs.com/avatar/default/man.jpg',
-    gender: '男',
-    phone: '123112312',
-    email: '12345@qq.com',
-    createTime: new Date(),
+<style scoped lang="scss">
+.wrap {
+  width: 100vw;
+  height: 100vh;
+  background-color: #F7F8FA;
+  overflow: hidden;
+  .submit {
+    margin-top: 20%;
+    .avatar {
+      text-align: center;
+    }
+    .formInfo {
+      margin-top: 20px;
+    }
   }
-  
-  const toEdit = (editKey: string, editName: string, currentValue: string) => {
-    router.push({
-      path: '/user/edit',
-      query: {
-        editKey,
-        editName,
-        currentValue,
-      }
-    })
-  }
-  </script>
-  
-  <style scoped>
-  
-  </style>
+
+}
+</style>
